@@ -1,5 +1,4 @@
-import { createResource } from "../../../lib/actions/resources";
-import { findRelevantContent } from "../../../lib/ai/embedding";
+
 import { openai } from "@ai-sdk/openai";
 import { generateObject, streamText, tool } from "ai";
 import { z } from "zod";
@@ -87,5 +86,34 @@ export async function POST(req: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+    return result.toDataStreamResponse();
+  }
+async function createResource({ content }: { content: string[] }): Promise<any> {
+  // Assuming you have a database or some storage mechanism to save the resource
+  // Here we are just simulating the storage with a simple in-memory array
+  const knowledgeBase = []; // This should be replaced with actual storage logic
+
+  // Add the content to the knowledge base
+  knowledgeBase.push(...content);
+
+  // Return a success response or the added content
+  return { success: true, addedContent: content };
 }
+async function findRelevantContent(question: string): Promise<any[]> {
+  // Assuming you have a database or some storage mechanism to retrieve the resource
+  // Here we are just simulating the retrieval with a simple in-memory array
+  const knowledgeBase = [
+    { name: "What is AI?", content: "AI stands for Artificial Intelligence." },
+    { name: "How does AI work?", content: "AI works by using algorithms and data." },
+    // Add more predefined knowledge base entries as needed
+  ];
+
+  // Filter the knowledge base to find relevant content based on the question
+  const relevantContent = knowledgeBase.filter((entry) =>
+    entry.name.toLowerCase().includes(question.toLowerCase())
+  );
+
+  // Return the relevant content
+  return relevantContent;
+}
+
