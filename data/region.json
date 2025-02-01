@@ -1,0 +1,194 @@
+[
+ {
+   "region_id": "GR",
+   "region_code": "GR",
+   "region_name": "Graubünden",
+   "region_crime_rate": 13.8,
+   "region_safety_scale": 86.2,
+   "wdf__region_id": "GR"
+ },
+ {
+   "region_id": "BS",
+   "region_code": "BS",
+   "region_name": "Basel-Stadt",
+   "region_crime_rate": 3.91,
+   "region_safety_scale": 96.09,
+   "wdf__region_id": "BS"
+ },
+ {
+   "region_id": "BE",
+   "region_code": "BE",
+   "region_name": "Bern",
+   "region_crime_rate": 23.44,
+   "region_safety_scale": 76.56,
+   "wdf__region_id": "BE"
+ },
+ {
+   "region_id": "GL",
+   "region_code": "GL",
+   "region_name": "Glarus",
+   "region_crime_rate": 31.41,
+   "region_safety_scale": 68.59,
+   "wdf__region_id": "GL"
+ },
+ {
+   "region_id": "NW",
+   "region_code": "NW",
+   "region_name": "Nidwalden",
+   "region_crime_rate": 3.91,
+   "region_safety_scale": 96.09,
+   "wdf__region_id": "NW"
+ },
+ {
+   "region_id": "UR",
+   "region_code": "UR",
+   "region_name": "Uri",
+   "region_crime_rate": 65.62,
+   "region_safety_scale": 34.38,
+   "wdf__region_id": "UR"
+ },
+ {
+   "region_id": "ZH",
+   "region_code": "ZH",
+   "region_name": "Zürich",
+   "region_crime_rate": 38.17,
+   "region_safety_scale": 61.83,
+   "wdf__region_id": "ZH"
+ },
+ {
+   "region_id": "JU",
+   "region_code": "JU",
+   "region_name": "Jura",
+   "region_crime_rate": 13.8,
+   "region_safety_scale": 86.2,
+   "wdf__region_id": "JU"
+ },
+ {
+   "region_id": "SO",
+   "region_code": "SO",
+   "region_name": "Solothurn",
+   "region_crime_rate": 22.27,
+   "region_safety_scale": 77.73,
+   "wdf__region_id": "SO"
+ },
+ {
+   "region_id": "FR",
+   "region_code": "FR",
+   "region_name": "Fribourg",
+   "region_crime_rate": 18.75,
+   "region_safety_scale": 81.25,
+   "wdf__region_id": "FR"
+ },
+ {
+   "region_id": "TI",
+   "region_code": "TI",
+   "region_name": "Ticino",
+   "region_crime_rate": 29.21,
+   "region_safety_scale": 70.79,
+   "wdf__region_id": "TI"
+ },
+ {
+   "region_id": "SG",
+   "region_code": "SG",
+   "region_name": "St. Gallen",
+   "region_crime_rate": 4.55,
+   "region_safety_scale": 95.45,
+   "wdf__region_id": "SG"
+ },
+ {
+   "region_id": "VD",
+   "region_code": "VD",
+   "region_name": "Vaud",
+   "region_crime_rate": 30.52,
+   "region_safety_scale": 69.48,
+   "wdf__region_id": "VD"
+ },
+ {
+   "region_id": "TG",
+   "region_code": "TG",
+   "region_name": "Thurgau",
+   "region_crime_rate": 18.75,
+   "region_safety_scale": 81.25,
+   "wdf__region_id": "TG"
+ },
+ {
+   "region_id": "AG",
+   "region_code": "AG",
+   "region_name": "Aargau",
+   "region_crime_rate": 39.93,
+   "region_safety_scale": 60.07,
+   "wdf__region_id": "AG"
+ },
+ {
+   "region_id": "VS",
+   "region_code": "VS",
+   "region_name": "Valais",
+   "region_crime_rate": 31.41,
+   "region_safety_scale": 68.59,
+   "wdf__region_id": "VS"
+ },
+ {
+   "region_id": "OW",
+   "region_code": "OW",
+   "region_name": "Obwalden",
+   "region_crime_rate": 3.91,
+   "region_safety_scale": 96.09,
+   "wdf__region_id": "OW"
+ },
+ {
+   "region_id": "NE",
+   "region_code": "NE",
+   "region_name": "Neuchâtel",
+   "region_crime_rate": 3.91,
+   "region_safety_scale": 96.09,
+   "wdf__region_id": "NE"
+ },
+ {
+   "region_id": "BL",
+   "region_code": "BL",
+   "region_name": "Basel-Landschaft",
+   "region_crime_rate": 61.91,
+   "region_safety_scale": 38.09,
+   "wdf__region_id": "BL"
+ },
+ {
+   "region_id": "SH",
+   "region_code": "SH",
+   "region_name": "Schaffhausen",
+   "region_crime_rate": 22.66,
+   "region_safety_scale": 77.34,
+   "wdf__region_id": "SH"
+ },
+ {
+   "region_id": "LU",
+   "region_code": "LU",
+   "region_name": "Lucerne",
+   "region_crime_rate": 35.94,
+   "region_safety_scale": 64.06,
+   "wdf__region_id": "LU"
+ },
+ {
+   "region_id": "ZG",
+   "region_code": "ZG",
+   "region_name": "Zug",
+   "region_crime_rate": 3.91,
+   "region_safety_scale": 96.09,
+   "wdf__region_id": "ZG"
+ },
+ {
+   "region_id": "GE",
+   "region_code": "GE",
+   "region_name": "Geneva",
+   "region_crime_rate": 31.41,
+   "region_safety_scale": 68.59,
+   "wdf__region_id": "GE"
+ },
+ {
+   "region_id": "SZ",
+   "region_code": "SZ",
+   "region_name": "Schwyz",
+   "region_crime_rate": 34.77,
+   "region_safety_scale": 65.23,
+   "wdf__region_id": "SZ"
+ }
+]
