@@ -1,5 +1,5 @@
 {
-  "name": "test-application",
+  "name": "rag-vision",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -35,7 +35,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.13.0",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "dotenv": "^16.4.7",
