@@ -90,7 +90,7 @@ try {
   console.error("Error loading movie data:", error);
 }
 
-export async function findRelevantContent(query: string): Promise<MovieData[]> {
+async function findRelevantContent(query: string): Promise<MovieData[]> {
   console.log("Searching for relevant movie content with query:", query);
   const searchTerms = query.toLowerCase().split(' ');
 
