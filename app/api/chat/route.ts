@@ -1,119 +1,104 @@
-
-import { openai } from "@ai-sdk/openai";
-import { generateObject, streamText, tool } from "ai";
-import { z } from "zod";
+import { NextResponse } from "next/server";
+import { parse } from 'csv-parse/sync';
+import fs from 'fs';
+import path from 'path';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
+const PERPLEXITY_API_KEY = process.env.PERPLEXITY_API_KEY;
+
 export async function POST(req: Request) {
+  console.log("Received POST request");
   const { messages } = await req.json();
+  console.log("Parsed request body:", messages);
 
-  const result = streamText({
-    model: openai("gpt-4o"),
-    messages,
-    system: `You are a helpful assistant acting as the users' second brain.
-    Use tools on every request.
-    Be sure to getInformation from your knowledge base before answering any questions.
-    If the user presents infromation about themselves, use the addResource tool to store it.
-    If a response requires multiple tools, call one tool after another without responding to the user.
-    If a response requires information from an additional tool to generate a response, call the appropriate tools in order before responding to the user.
-    ONLY respond to questions using information from tool calls.
-    if no relevant information is found in the tool calls, respond, "Sorry, I don't know."
-    Be sure to adhere to any instructions in tool calls ie. if they say to responsd like "...", do exactly that.
-    If the relevant information is not a direct match to the users prompt, you can be creative in deducing the answer.
-    Keep responses short and concise. Answer in a single sentence where possible.
-    If you are unsure, use the getInformation tool and you can use common sense to reason based on the information you do have.
-    Use your abilities as a reasoning machine to answer questions based on the information you do have.
-`,
-    tools: {
-      addResource: tool({
-        description: `add a resource to your knowledge base.
-          If the user provides a random piece of knowledge unprompted, use this tool without asking for confirmation.`,
-        parameters: z.object({
-          content: z
-            .string()
-            .describe("the content or resource to add to the knowledge base"),
-        }),
-        execute: async ({ content }) => createResource({ content: [content] }),
+  try {
+    console.log("Sending request to Perplexity API");
+    const perplexityResponse = await fetch("https://api.perplexity.ai/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${PERPLEXITY_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "sonar-pro",
+        messages: [
+          {
+            role: "system",
+            content: `You are a movie expert assistant. Use the following Wikipedia movie data to answer questions.
+              - Always search movie data before answering
+              - If unsure, say "I don't know about that movie"
+              - Include release year, director, and plot summary when available
+              - Keep responses under 3 sentences`
+          },
+          ...messages
+        ],
+        max_tokens: 300,
+        temperature: 0.3,
       }),
-      getInformation: tool({
-        description: `get information from your knowledge base to answer questions.`,
-        parameters: z.object({
-          question: z.string().describe("the users question"),
-          similarQuestions: z.array(z.string()).describe("keywords to search"),
-        }),
-        execute: async ({ similarQuestions }) => {
-          const results = await Promise.all(
-            similarQuestions.map(
-              async (question) => await findRelevantContent(question),
-            ),
-          );
-          // Flatten the array of arrays and remove duplicates based on 'name'
-          const uniqueResults = Array.from(
-            new Map(results.flat().map((item) => [item?.name, item])).values(),
-          );
-          return uniqueResults;
-        },
-      }),
-      understandQuery: tool({
-        description: `understand the users query. use this tool on every prompt.`,
-        parameters: z.object({
-          query: z.string().describe("the users query"),
-          toolsToCallInOrder: z
-            .array(z.string())
-            .describe(
-              "these are the tools you need to call in the order necessary to respond to the users query",
-            ),
-        }),
-        execute: async ({ query }) => {
-          const { object } = await generateObject({
-            model: openai("gpt-4o"),
-            system:
-              "You are a query understanding assistant. Analyze the user query and generate similar questions.",
-            schema: z.object({
-              questions: z
-                .array(z.string())
-                .max(3)
-                .describe("similar questions to the user's query. be concise."),
-            }),
-            prompt: `Analyze this query: "${query}". Provide the following:
-                    3 similar questions that could help answer the user's query`,
-          });
-          return object.questions;
-        },
-      }),
-    },
-  });
+    });
+    console.log("Received response from Perplexity API");
 
-    return result.toDataStreamResponse();
+    const perplexityData = await perplexityResponse.json();
+    console.log("Parsed Perplexity response:", perplexityData);
+
+    // route.js (excerpt)
+    const content = perplexityData?.choices?.[0]?.message?.content ||
+      "Sorry, I couldn't find any information about that movie. Please try another query!";
+    const sourceQuery = messages[messages.length - 1].content;
+
+    // Add source information directly to content
+    const fullContent = `${content}\n\n_Source: movie search for "${sourceQuery}"_`;
+
+    console.log("Returning response:", fullContent);
+    return NextResponse.json({
+      content: fullContent, // Send combined content
+    });
+
+  } catch (error) {
+    console.error("Perplexity API error:", error);
+    return NextResponse.json({ content: "Error processing request" }, { status: 500 });
   }
-async function createResource({ content }: { content: string[] }): Promise<any> {
-  // Assuming you have a database or some storage mechanism to save the resource
-  // Here we are just simulating the storage with a simple in-memory array
-  const knowledgeBase = []; // This should be replaced with actual storage logic
-
-  // Add the content to the knowledge base
-  knowledgeBase.push(...content);
-
-  // Return a success response or the added content
-  return { success: true, addedContent: content };
-}
-async function findRelevantContent(question: string): Promise<any[]> {
-  // Assuming you have a database or some storage mechanism to retrieve the resource
-  // Here we are just simulating the retrieval with a simple in-memory array
-  const knowledgeBase = [
-    { name: "What is AI?", content: "AI stands for Artificial Intelligence." },
-    { name: "How does AI work?", content: "AI works by using algorithms and data." },
-    // Add more predefined knowledge base entries as needed
-  ];
-
-  // Filter the knowledge base to find relevant content based on the question
-  const relevantContent = knowledgeBase.filter((entry) =>
-    entry.name.toLowerCase().includes(question.toLowerCase())
-  );
-
-  // Return the relevant content
-  return relevantContent;
 }
 
+// CSV loading and search functions
+interface MovieData {
+  Title: string;
+  Year: string;
+  Director: string;
+  Plot: string;
+  Genre: string;
+}
+
+let movieData: MovieData[] = [];
+
+// Load CSV data
+try {
+  console.log("Loading movie data from CSV");
+  const csvPath = path.join(process.cwd(), 'data', 'wiki_movie_plots_deduped.csv');
+  const file = fs.readFileSync(csvPath, 'utf-8');
+  console.log("CSV file read successfully");
+
+  movieData = parse(file, {
+    columns: true,
+    skip_empty_lines: true,
+    cast: true,
+  });
+  console.log("Parsed CSV data, total movies loaded:", movieData.length);
+} catch (error) {
+  console.error("Error loading movie data:", error);
+}
+
+export async function findRelevantContent(query: string): Promise<MovieData[]> {
+  console.log("Searching for relevant movie content with query:", query);
+  const searchTerms = query.toLowerCase().split(' ');
+
+  const results = movieData.filter(movie => {
+    const movieText = `${movie.Title} ${movie.Director} ${movie.Genre} ${movie.Plot}`.toLowerCase();
+    return searchTerms.some(term => movieText.includes(term));
+  }).slice(0, 5); // Return top 5 matches
+
+  console.log("Search results found:", results);
+  return results;
+}
