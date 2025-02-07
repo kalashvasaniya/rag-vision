@@ -1,48 +1,95 @@
-# AI SDK RAG Template
+# RAG vision
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnicoalbanese%2Fai-sdk-rag-template&env=OPENAI_API_KEY&envDescription=You%20will%20need%20an%20OPENAI%20API%20Key.&project-name=ai-sdk-rag&repository-name=ai-sdk-rag&stores=%5B%7B%22type%22%3A%22postgres%22%7D%5D&skippable-integrations=1)
-
-A [Next.js](https://nextjs.org/) application, powered by the Vercel AI SDK, that uses retrieval-augmented generation (RAG) to reason and respond with information outside of the model's training data.
+## Overview
+This project is an AI-powered movie encyclopedia utilizing Retrieval-Augmented Generation (RAG) techniques. It integrates with Perplexity AI for generating movie-related responses and leverages a local CSV dataset for enhanced retrieval. The frontend is built with Next.js and React, featuring an interactive chat interface.
 
 ## Features
+- **Movie Search with AI Assistance**: Queries Perplexity AI to fetch movie-related information.
+- **Local Movie Database**: Searches a CSV dataset containing Wikipedia movie plots.
+- **Chat Interface**: User-friendly chat interface built with Next.js, React, and Framer Motion.
+- **Streaming Responses**: Optimized API handling for fast and interactive responses.
+- **Vector Search**: Implements Pinecone for efficient movie data retrieval.
 
-- Information retrieval and addition through tool calls using the [`streamText`](https://sdk.vercel.ai/docs/reference/ai-sdk-core/stream-text) function
-- Real-time streaming of model responses to the frontend using the [`useChat`](https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat) hook
-- Vector embedding storage with [DrizzleORM](https://orm.drizzle.team/) and [PostgreSQL](https://www.postgresql.org/)
-- Animated UI with [Framer Motion](https://www.framer.com/motion/)
+## Tech Stack
+- **Frontend**: Next.js, React, Tailwind CSS, Framer Motion
+- **Backend**: Next.js API routes
+- **Database**: CSV-based local search
+- **APIs**: Perplexity AI, Pinecone, Hugging Face
 
-## Getting Started
+## Setup Instructions
+### Prerequisites
+- Node.js (v18 or later)
+- npm or yarn
 
-To get the project up and running, follow these steps:
-
-1. Install dependencies:
-
-   ```bash
+### Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/kalashvasaniya/rag-vision
+   cd rag-vision
+   ```
+2. Install dependencies:
+   ```sh
    npm install
    ```
-
-2. Copy the example environment file:
-
-   ```bash
-   cp .env.example .env
+3. Create a `.env.local` file and add API keys:
+   ```sh
+   PERPLEXITY_API_KEY=your_perplexity_api_key
+   PINECONE_API_KEY=your_pinecone_api_key
+   PINECONE_INDEX_NAME=rag-vision
+   PINECONE_ENVIRONMENT=us-east-1
+   HUGGINGFACE_API_KEY=your_huggingface_api_key
    ```
 
-3. Add your OpenAI API key and PostgreSQL connection string to the `.env` file:
+### Running the App
+To start the development server:
+```sh
+npm run dev
+```
+The application will be available at `http://localhost:3000`.
 
-   ```
-   OPENAI_API_KEY=your_api_key_here
-   DATABASE_URL=your_postgres_connection_string_here
-   ```
+## API Endpoints
+### `/api/chat`
+- **Method**: `POST`
+- **Description**: Handles chat interactions by querying Perplexity AI and local movie database.
+- **Request Body**:
+  ```json
+  {
+    "messages": [
+      { "role": "user", "content": "Tell me about Inception" }
+    ]
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "content": "Inception (2010), directed by Christopher Nolan, is a mind-bending thriller about dream manipulation."
+  }
+  ```
 
-4. Migrate the database schema:
+### `/api/search`
+- **Method**: `GET`
+- **Description**: Searches movies in the local dataset.
+- **Query Parameters**:
+  - `query`: Movie title or keyword.
+- **Example Request**:
+  ```sh
+  GET /api/search?query=Inception
+  ```
+- **Response**:
+  ```json
+  {
+    "results": [
+      { "title": "Inception", "year": 2010, "director": "Christopher Nolan" }
+    ]
+  }
+  ```
 
-   ```bash
-   npm run db:migrate
-   ```
+## Contributing
+1. Fork the repository.
+2. Create a new branch (`feature-branch-name`).
+3. Make changes and commit (`git commit -m 'Add new feature'`).
+4. Push to your branch (`git push origin feature-branch-name`).
+5. Submit a pull request.
 
-5. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-Your project should now be running on [http://localhost:3000](http://localhost:3000).
+## License
+This project is licensed under the MIT License.
