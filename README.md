@@ -1,4 +1,4 @@
-# RAG vision
+# RAG Vision
 
 ## Overview
 This project is an AI-powered movie encyclopedia utilizing Retrieval-Augmented Generation (RAG) techniques. It integrates with Perplexity AI for generating movie-related responses and leverages a local CSV dataset for enhanced retrieval. The frontend is built with Next.js and React, featuring an interactive chat interface.
@@ -27,10 +27,12 @@ This project is an AI-powered movie encyclopedia utilizing Retrieval-Augmented G
    git clone https://github.com/kalashvasaniya/rag-vision
    cd rag-vision
    ```
+
 2. Install dependencies:
    ```sh
    npm install
    ```
+
 3. Create a `.env.local` file and add API keys:
    ```sh
    PERPLEXITY_API_KEY=your_perplexity_api_key
@@ -45,11 +47,11 @@ To start the development server:
 ```sh
 npm run dev
 ```
-The application will be available at `http://localhost:3000`.
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
 ## API Endpoints
 ### `/api/chat`
-- **Method**: `POST`
+- **Method**: POST
 - **Description**: Handles chat interactions by querying Perplexity AI and local movie database.
 - **Request Body**:
   ```json
@@ -67,10 +69,9 @@ The application will be available at `http://localhost:3000`.
   ```
 
 ### `/api/search`
-- **Method**: `GET`
+- **Method**: GET
 - **Description**: Searches movies in the local dataset.
-- **Query Parameters**:
-  - `query`: Movie title or keyword.
+- **Query Parameters**: `query` (Movie title or keyword)
 - **Example Request**:
   ```sh
   GET /api/search?query=Inception
@@ -87,9 +88,28 @@ The application will be available at `http://localhost:3000`.
 ## Contributing
 1. Fork the repository.
 2. Create a new branch (`feature-branch-name`).
-3. Make changes and commit (`git commit -m 'Add new feature'`).
-4. Push to your branch (`git push origin feature-branch-name`).
+3. Make changes and commit:
+   ```sh
+   git commit -m 'Add new feature'
+   ```
+4. Push to your branch:
+   ```sh
+   git push origin feature-branch-name
+   ```
 5. Submit a pull request.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
+
+## Implementing RAG
+For a complete experiment on implementing RAG, refer to this Colab notebook:
+
+### RAG Implementation Experiment
+The core components involved in the implementation include:
+```mermaid
+graph TD
+    A[Chunking] --> B(Embedding)
+    B --> C(Vector Database)
+    C --> D(Retrieval Process)
+    D --> E(Generation)
+```
