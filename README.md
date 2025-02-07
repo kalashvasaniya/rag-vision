@@ -113,3 +113,6 @@ graph TD
     C --> D(Retrieval Process)
     D --> E(Generation)
 ```
+
+### Proper RAG Working Model
+Check out the proper RAG working model here: [Colab Notebook](https://colab.research.google.com/drive/1639dHi1jc8-5jQ91qaYeHkIhb_1pFSLO)
